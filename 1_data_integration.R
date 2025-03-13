@@ -3,7 +3,8 @@
 #                           1. Data Integration                                #
 #                                                                              #
 ################################################################################
-
+install.packages("dplyr")
+library(dplyr)
 
 ### Step 1.1: Create a GitHub Repository and Upload Files
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,7 +23,7 @@
 # Ensure you use the correct "raw" URL for the file.
 
 #----------------
-#u2_data <- read.csv()
+u2_data <- read.csv("U2_2017data.csv")
 #----------------
 
 ### Step 1.3: Explore the structure and summary of the dataframe
@@ -30,7 +31,7 @@
 # Use str(), skimr::skim(), and dplyr::glimpse() to understand the dataframe.
 
 #----------------
-
+str(u2_data)
 #----------------
 
 ### Step 1.4: Remove missing values from the DBH and Code columns using dplyr
@@ -42,7 +43,17 @@
 # Implement your solution using this approach.
 
 #----------------
-#u2_data <- 
+
+# create a vector with all the column names in u2_data
+u2_cols <- colnames(u2_data)
+# print the old and new number of rows
+u2dat_oldrow <- nrow(u2_data) 
+print(paste("Old number of rows:", nrow(u2_data)))
+# filter out rows with missing values in all columns using u2_cols vector to define colnames
+u2_data <- u2_data %>% filter_at(vars(one_of(u2_cols)), all_vars(!is.na(.)))
+u2dat_newrow <- nrow(u2_data) 
+print(paste("New number of rows:", nrow(u2_data)))
+
 #----------------
 
 ### Step 1.5: Keep only overstory trees (Class = "O") using dplyr
