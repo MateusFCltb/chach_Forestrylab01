@@ -3,7 +3,7 @@
 #                           1. Data Integration                                #
 #                                                                              #
 ################################################################################
-install.packages("dplyr")
+#install.packages("dplyr")
 library(dplyr)
 
 ### Step 1.1: Create a GitHub Repository and Upload Files
@@ -111,7 +111,7 @@ print(colnames(u2_data_overstory_merge))
 # Implement your solution using this approach.
 
 #----------------
-trees <- u2_data_merge %>% select(Plot, SppCode, Genus, Common.name, DBH, Chojnacky_Code)
+trees <- u2_data_overstory_merge %>% select(Plot, SppCode, Genus, Common.name, DBH, Chojnacky_Code)
 #----------------  
 
 # Checkpoint: Review the Largest DBH Values

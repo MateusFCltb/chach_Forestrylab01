@@ -1,3 +1,4 @@
+source("1_data_integration.R", echo=TRUE)
 ################################################################################
 #                                                                              #
 #                           2. Calculations – EF, BA and TPA                   #
@@ -25,17 +26,17 @@
 # EF = 1 / plot area in acres.
 # Calculate the expansion factor (EF) and add it as a new column to the trees dataframe.
 
-#----------------
-#plot_radius <-    # in feet
-#plot_area_acres <-  
-#EF <-  
+#---------------
+plot_radius <- 58.5   # in feet
+plot_area_acres <-  (plot_radius^2 * pi) / 43560
+EF <- round(1 / plot_area_acres)  # Expansion Factor rounded to the nearest whole number
 #----------------     
 
 # Add EF as a new column
 # You can use either the `$` operator or `dplyr::mutate()` to add EF.
 
 #----------------
-
+trees <- trees %>% mutate(EF = EF)
 #----------------
 
 # Question: What is the value of EF? Round your answer to the nearest whole number.
@@ -50,25 +51,25 @@
 #   - Add the result as a new column named `dia_ft` to the trees dataframe.
 
 #----------------
-# trees
+trees <- trees %>% mutate(dia_ft = DBH / 12)
 #----------------
 
 # Calculate BA per tree:  BA = π × (diameter in feet / 2)^2.
 #   - Add the result as a new column named `BA` to the trees dataframe.
 #----------------
-# trees
+trees <- trees %>% mutate(BA = pi * (dia_ft / 2)^2)
 #----------------
 
 # Calculate BA per acre: BA_pa = BA × EF.
 #   - Add the result as a new column named `BA_pa` to the trees dataframe.
 #----------------
-# trees
+trees <- trees %>% mutate(BA_pa = BA * EF)
 #----------------
 
 # Calculate TPA: TPA = 1 × EF.
 #   - Add the result as a new column named `TPA` to the trees dataframe.
 #----------------
-# trees
+trees <- trees %>% mutate(TPA = nrow(trees) * EF)
 #----------------
 
 
