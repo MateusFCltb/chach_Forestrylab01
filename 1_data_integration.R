@@ -54,6 +54,8 @@ u2_data <- u2_data %>% filter_at(vars(one_of(u2_cols)), all_vars(!is.na(.)))
 u2dat_newrow <- nrow(u2_data) 
 print(paste("New number of rows:", nrow(u2_data)))
 
+
+colnames(u2_data)[colnames(u2_data) == "Code"] <- "SppCode" #change colname from Code to SppCode to match the format in Species_Codes.csv
 #----------------
 
 ### Step 1.5: Keep only overstory trees (Class = "O") using dplyr
@@ -66,7 +68,8 @@ print(paste("New number of rows:", nrow(u2_data)))
 # Implement your solution using this approach.
 
 #----------------
-#u2_data <-
+u2_data_overstory <- u2_data %>% filter(Class == "O")
+# (Not needed anymore) colnames(u2_data_overstory)[colnames(u2_data_overstory) == "Code"] <- "SppCode" #modify the code column name to SppCode to match the format ins Species_Codes.csv
 #----------------
 
 ### Step 1.6: Read the Species_Codes.csv File and Merge It with u2_data_overstory
@@ -75,7 +78,10 @@ print(paste("New number of rows:", nrow(u2_data)))
 # Make sure to use the "Raw" URL of the file.
 
 #----------------     
-#SppCode <- read.csv()
+SppCode <- read.csv("Species_Codes.csv")
+print(colnames(u2_data_overstory))
+u2_data_overstory_merge <- merge(u2_data_overstory, SppCode, by = "SppCode", all.x = TRUE)
+print(colnames(u2_data_overstory_merge))
 #---------------- 
 
 # Merge u2_data with SppCode using merge.data.frame.
@@ -90,7 +96,7 @@ print(paste("New number of rows:", nrow(u2_data)))
 # Implement your solution using this approach and store the result in trees_merge.
 
 #----------------
-#trees_merge <- merge() 
+trees_merge <-
 #----------------
 
 ### Step 1.7: Create a new dataset named trees
