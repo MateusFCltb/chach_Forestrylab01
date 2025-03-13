@@ -16,7 +16,7 @@
 # Implement this step to count the abundance of each species by plot.
       
 #----------------
-#tree_cnt <- trees %>%
+tree_cnt <- trees %>% group_by(Plot, Chojnacky_Code) %>% tally()
 #----------------
 
 ### Step 5.2: Identify Dominant Species
@@ -31,11 +31,11 @@
 # Implement this step to identify the dominant species for each plot.
 
 #----------------
-#dom_cnt <- tree_cnt %>%
+dom_cnt <- tree_cnt %>% group_by(Plot) %>% filter(n == max(n))
 #----------------
 
 # Question: Does `dom_cnt` have the same number of rows as `sum_u2`? If not, what caused the difference?
-
+###### Answer: No, because dom_cnt just considers the dominant species by code per plot
 
 ### Step 5.3: Calculate Total Trees and Species Richness
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,7 +55,7 @@
 # Implement these steps to calculate total trees and species richness.
 
 #----------------
-#tree_total <- tree_cnt %>%
+tree_total <- tree_cnt %>% group_by(Plot) %>% summarise(Ttl_Trees = sum(n))
 
 #richness <- tree_cnt %>%
 #----------------
