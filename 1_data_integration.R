@@ -111,7 +111,8 @@ print(colnames(u2_data_overstory_merge))
 # Implement your solution using this approach.
 
 #----------------
-trees <- u2_data_overstory_merge %>% select(Plot, SppCode, Genus, Common.name, DBH, Chojnacky_Code)
+trees <- u2_data_overstory_merge %>% select(Plot, SppCode, Genus, Common.name, DBH, Chojnacky_Code) 
+## !!!!I asked the instructor about which trees to include and was told to just include "O" class trees -- so I used the overstory dataset.
 #----------------  
 
 # Checkpoint: Review the Largest DBH Values

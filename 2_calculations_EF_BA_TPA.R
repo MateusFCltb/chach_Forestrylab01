@@ -1,4 +1,4 @@
-source("1_data_integration.R", echo=TRUE)
+
 ################################################################################
 #                                                                              #
 #                           2. Calculations – EF, BA and TPA                   #
@@ -69,7 +69,9 @@ trees <- trees %>% mutate(BA_pa = BA * EF)
 # Calculate TPA: TPA = 1 × EF.
 #   - Add the result as a new column named `TPA` to the trees dataframe.
 #----------------
-trees <- trees %>% mutate(TPA = nrow(trees) * EF)
+#Need to group by plot and then find TPA by plot 
+trees <- trees %>% mutate(TPA = 1 * EF)
+#trees <- trees %>% group_by(Plot) %>% mutate(TPA = nrow(trees) * EF)
 #----------------
 
 

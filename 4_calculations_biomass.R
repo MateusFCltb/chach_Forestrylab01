@@ -17,7 +17,7 @@
 # Implement this step to load the biomass equations.
 
 #----------------
-#Bm_equa <- 
+Bm_equa <- read.csv("Biomass Equation.csv")
 #----------------
 
 ### Step 4.2: Merge Biomass Equations with Tree Data
@@ -31,7 +31,7 @@
 # Implement this step to merge the biomass equations with the tree data.
 
 #----------------
-#trees <- trees %>%
+trees <- trees %>% left_join(Bm_equa, by = "Chojnacky_Code")
 #----------------
 
 ### Step 4.3: Calculate Biomass
@@ -41,12 +41,12 @@
 #   - Add the result as a new column named `biomass` to the `trees` dataframe.
 
 # Example of calculating biomass:
-#   dataframe <- dataframe %>% mutate(biomass = exp(b0 + b1 * log(DBH * 2.54)))
+#   dataframe <- dataframe %>% mutate(biomass = exp(b0 + b1 * log(DBH * 2.54))) ## Added .x to the end of the b(num) vars
 
 # Implement this step to calculate the biomass for each tree.
 
 #----------------
-#trees <- trees %>%
+trees <- trees %>% mutate(biomass = exp(b0.x + b1.x * log(DBH * 2.54)))
 #----------------
 
 ### Step 4.4: Filter Biomass Data
@@ -57,7 +57,7 @@
 #   - For example, `filter(column != 0)` will keep all rows where the value in `column` is not zero.
 
 #----------------
-#trees <- trees %>%
+trees <- trees %>% filter(b0.x != 0 & b1.x != 0)
 #----------------
 
 ### Step 4.5: Aggregate Biomass by Plot
@@ -70,7 +70,7 @@
 #   dataframe <- dataframe %>% group_by(group_column) %>% summarise(column = sum(column))
 
 #----------------
-#sum_u2_bm <- trees %>%
+sum_u2_bm <- trees %>% group_by(Plot) %>% summarise(biomass = sum(biomass))
 #----------------
 
 ### Step 4.6: Calculate Biomass per Acre
@@ -83,7 +83,7 @@
 #   dataframe <- dataframe %>% mutate(new_column = column * Expansion Factor (EF))
 
 #----------------
-#sum_u2_bm <- sum_u2_bm %>%
+sum_u2_bm <- sum_u2_bm %>% mutate(bm_pa = biomass * EF)
 #----------------
 
 ### Step 4.7: Merge Biomass Data with Existing Summary
@@ -95,7 +95,7 @@
 #   dataframe1 <- dataframe1 %>% left_join(dataframe2, by = "common_column")
 
 #----------------
-#sum_u2 <- sum_u2 %>%
+sum_u2 <- sum_u2 %>% left_join(sum_u2_bm, by = "Plot")
 #----------------
 
 
@@ -104,10 +104,10 @@
 # YOUR ANSWER
 
 #----------------
-#sum_u2 %>%
+sum_u2 %>% arrange(desc(bm_pa))
 #---------
 
-# Checkpoint: Review the Largest bm_pa Values
+# Checkpoint: Review the Largest bm_pa Values == plot E3 with 139776 for bm_pa
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Use the following code to verify your results:
 #head(sum_u2 %>% arrange(desc(bm_pa)))

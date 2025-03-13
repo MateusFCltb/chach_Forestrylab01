@@ -1,4 +1,3 @@
-source("2_calculations_EF_BA_TPA.R")
 ################################################################################
 #                                                                              #
 #                           3. Summarize Data                                  #
@@ -19,7 +18,7 @@ source("2_calculations_EF_BA_TPA.R")
 #   - Add the result as a new column named `BA` to `sum_u2_BA`.
 
 #----------------
-#sum_u2_BA <-  trees %>%
+sum_u2_BA <-  trees %>% group_by(Plot) %>% summarise(BA = sum(BA_pa))
 #----------------
 
 
@@ -29,7 +28,7 @@ source("2_calculations_EF_BA_TPA.R")
 #   - Add the result as a new column named `TPA` to `sum_u2_TPA`.
 
 #----------------
-#sum_u2_TPA <- trees %>%
+sum_u2_TPA <-  trees %>% group_by(Plot) %>% summarise(TPA = sum(TPA))
 #----------------
 
 
@@ -40,7 +39,7 @@ source("2_calculations_EF_BA_TPA.R")
 # new_df_name <- dataframe1 %>% inner_join(dataframe2, by = "common_column")
 
 #----------------
-#sum_u2 <- sum_u2_BA %>%
+sum_u2 <- sum_u2_BA %>% inner_join(sum_u2_TPA, by = "Plot")
 #----------------
 
 # Question: Which plot has the maximum basal area?
@@ -49,7 +48,7 @@ source("2_calculations_EF_BA_TPA.R")
 # YOUR ANSWER
 
 #----------------
-#sum_u2 %>% 
+sum_u2 %>% arrange(desc("BA")) ## A5 has the highest basal area at 99.0
 #----------------
 
 
