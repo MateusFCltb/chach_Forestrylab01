@@ -81,6 +81,7 @@ u2_data_overstory <- u2_data %>% filter(Class == "O")
 SppCode <- read.csv("Species_Codes.csv")
 print(colnames(u2_data_overstory))
 u2_data_overstory_merge <- merge(u2_data_overstory, SppCode, by = "SppCode", all.x = TRUE)
+u2_data_merge <- merge(u2_data, SppCode, by = "SppCode", all.x = TRUE)
 print(colnames(u2_data_overstory_merge))
 #---------------- 
 
@@ -95,8 +96,9 @@ print(colnames(u2_data_overstory_merge))
 # Think about how you can apply this syntax to merge u2_data with SppCode using these columns.
 # Implement your solution using this approach and store the result in trees_merge.
 
-#----------------
-trees_merge <-
+#---------------- Jumping ahead since u2_data already contains what trees_merge would have
+#tree
+#trees_merge <- 
 #----------------
 
 ### Step 1.7: Create a new dataset named trees
@@ -109,13 +111,13 @@ trees_merge <-
 # Implement your solution using this approach.
 
 #----------------
-#trees <- trees_merge %>%
+trees <- u2_data_merge %>% select(Plot, SppCode, Genus, Common.name, DBH, Chojnacky_Code)
 #----------------  
 
 # Checkpoint: Review the Largest DBH Values
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Use the following code to verify your results:
-#head(trees %>% arrange(desc(DBH)))
+head(trees %>% arrange(desc(DBH)))
 
 # Your results should look similar to this:
 #     Plot Code        Genus  Common.name  DBH Chojnacky_Code
