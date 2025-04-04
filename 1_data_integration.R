@@ -3,7 +3,8 @@
 #                           1. Data Integration                                #
 #                                                                              #
 ################################################################################
-
+#install.packages("dplyr")
+library(dplyr)
 
 ### Step 1.1: Create a GitHub Repository and Upload Files
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,7 +23,7 @@
 # Ensure you use the correct "raw" URL for the file.
 
 #----------------
-#u2_data <- read.csv()
+u2_data <- read.csv("U2_2017data.csv")
 #----------------
 
 ### Step 1.3: Explore the structure and summary of the dataframe
@@ -30,7 +31,7 @@
 # Use str(), skimr::skim(), and dplyr::glimpse() to understand the dataframe.
 
 #----------------
-
+str(u2_data)
 #----------------
 
 ### Step 1.4: Remove missing values from the DBH and Code columns using dplyr
@@ -42,7 +43,19 @@
 # Implement your solution using this approach.
 
 #----------------
-#u2_data <- 
+
+# create a vector with all the column names in u2_data
+u2_cols <- colnames(u2_data)
+# print the old and new number of rows
+u2dat_oldrow <- nrow(u2_data) 
+print(paste("Old number of rows:", nrow(u2_data)))
+# filter out rows with missing values in all columns using u2_cols vector to define colnames
+u2_data <- u2_data %>% filter_at(vars(one_of(u2_cols)), all_vars(!is.na(.)))
+u2dat_newrow <- nrow(u2_data) 
+print(paste("New number of rows:", nrow(u2_data)))
+
+
+colnames(u2_data)[colnames(u2_data) == "Code"] <- "SppCode" #change colname from Code to SppCode to match the format in Species_Codes.csv
 #----------------
 
 ### Step 1.5: Keep only overstory trees (Class = "O") using dplyr
@@ -55,7 +68,8 @@
 # Implement your solution using this approach.
 
 #----------------
-#u2_data <-
+u2_data_overstory <- u2_data %>% filter(Class == "O")
+# (Not needed anymore) colnames(u2_data_overstory)[colnames(u2_data_overstory) == "Code"] <- "SppCode" #modify the code column name to SppCode to match the format ins Species_Codes.csv
 #----------------
 
 ### Step 1.6: Read the Species_Codes.csv File and Merge It with u2_data_overstory
@@ -64,7 +78,11 @@
 # Make sure to use the "Raw" URL of the file.
 
 #----------------     
-#SppCode <- read.csv()
+SppCode <- read.csv("Species_Codes.csv")
+print(colnames(u2_data_overstory))
+u2_data_overstory_merge <- merge(u2_data_overstory, SppCode, by = "SppCode", all.x = TRUE)
+u2_data_merge <- merge(u2_data, SppCode, by = "SppCode", all.x = TRUE)
+print(colnames(u2_data_overstory_merge))
 #---------------- 
 
 # Merge u2_data with SppCode using merge.data.frame.
@@ -78,8 +96,9 @@
 # Think about how you can apply this syntax to merge u2_data with SppCode using these columns.
 # Implement your solution using this approach and store the result in trees_merge.
 
-#----------------
-#trees_merge <- merge() 
+#---------------- Jumping ahead since u2_data already contains what trees_merge would have
+#tree
+#trees_merge <- 
 #----------------
 
 ### Step 1.7: Create a new dataset named trees
@@ -92,13 +111,14 @@
 # Implement your solution using this approach.
 
 #----------------
-#trees <- trees_merge %>%
+trees <- u2_data_overstory_merge %>% select(Plot, SppCode, Genus, Common.name, DBH, Chojnacky_Code) 
+## !!!!I asked the instructor about which trees to include and was told to just include "O" class trees -- so I used the overstory dataset.
 #----------------  
 
 # Checkpoint: Review the Largest DBH Values
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Use the following code to verify your results:
-#head(trees %>% arrange(desc(DBH)))
+head(trees %>% arrange(desc(DBH)))
 
 # Your results should look similar to this:
 #     Plot Code        Genus  Common.name  DBH Chojnacky_Code
